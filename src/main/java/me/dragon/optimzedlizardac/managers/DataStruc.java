@@ -22,13 +22,9 @@ public class DataStruc {
 
     private  static  int vl;
 
-    public DataStruc(CheckType type, GradeEnum grade) {
-        this.type = type;
 
-        this.grade = grade;
-    }
 
-    public static void alert(String verbose,Player player) {
+    public static void alert(String verbose,Player player,CheckType type,GradeEnum grade) {
         vl++;
         for (Player admin : Bukkit.getOnlinePlayers()){
 

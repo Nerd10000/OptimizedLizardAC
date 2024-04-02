@@ -9,22 +9,27 @@ import me.dragon.optimzedlizardac.managers.enums.CheckType;
 import me.dragon.optimzedlizardac.managers.enums.GradeEnum;
 import org.bukkit.entity.Player;
 
+import javax.xml.crypto.Data;
 
-public class MultiAura extends DataStruc implements PacketListener {
-    public MultiAura() {
-        super(CheckType.AURA, GradeEnum.B);
-    }
-    private int entity;
+
+public class MultiAura implements PacketListener {
+
+    private int entity,target,lastTarget;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY){
             WrapperPlayClientInteractEntity wrapper = new WrapperPlayClientInteractEntity(event);
             if (wrapper.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK){
-                entity++;
-                if (entity > 1){
-                    DataStruc.alert("entity= " + entity, (Player) event.getPlayer());
+                target = wrapper.getEntityId();
+
+                if (lastTarget != target ){
+                    entity++;
+                    if (entity > 2){
+                        DataStruc.alert("entity= " + entity , (Player) event.getPlayer(),CheckType.AURA,GradeEnum.B);
+                    }
                 }
+                this.lastTarget = target;
             }
 
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION) {
