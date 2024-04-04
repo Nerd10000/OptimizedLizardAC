@@ -6,6 +6,8 @@ public enum CheckType {
     AIM,
     SPEED,
     AURA,
-    NOFALL
+    NOFALL,
+
+
 
 }
