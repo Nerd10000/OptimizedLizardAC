@@ -33,7 +33,7 @@ public class FlyC implements PacketListener {
 
             boolean isInvalid = diff > 0.00001D;
 
-            player.sendMessage("isInvalid= "+ isInvalid + " diffY= "+ diff+ " airTicks= "+ MovementStruc.airTicks);
+            player.sendMessage("isInvalid= "+ isInvalid + " diffY= "+ diff+ " airTicks= "+ MovementStruc.airTicks + "isOnGround= "+ player.isOnGround());
 
         }
     }

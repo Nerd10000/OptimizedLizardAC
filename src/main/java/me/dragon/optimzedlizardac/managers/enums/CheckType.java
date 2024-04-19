@@ -9,6 +9,8 @@ public enum CheckType {
     NOFALL,
 
     FLY,
-    JESUS
+    JESUS,
+
+    NOSLOW
 
 }

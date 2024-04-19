@@ -21,11 +21,11 @@ public class MovementStruc  implements Listener {
     public static Player player;
     public  static  Location From,To;
 
-    public  static  long lastYtaken,lastOnGround;
+    public  static  long lastVelocityTaken;
     public static int airTicks, groundTicks, lastGorundTicks, lastAirTicks;
 
 
-    public static  boolean isFalling;
+    public static  boolean isFalling,isBlocking,isSprinting;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
@@ -57,6 +57,18 @@ public class MovementStruc  implements Listener {
             }
         }
 
+        if (player.isSprinting()){
+            isSprinting = true;
+        } else {
+            isSprinting = false;
+        }
+        if (player.isBlocking()){
+            isBlocking = true;
+        }
+        else {
+            isBlocking = false;
+        }
+
         if (player.getFallDistance() > 0.0f) {
             isFalling = true;
         } else {
@@ -68,7 +80,12 @@ public class MovementStruc  implements Listener {
     }
     @EventHandler
     public  void onVelocityHandle(PlayerVelocityEvent e){
-        Vector velocity = e.getVelocity();
+
+        if (!e.getVelocity().isZero()){
+            lastVelocityTaken = System.currentTimeMillis();
+        }
+
+
     }
 
 
