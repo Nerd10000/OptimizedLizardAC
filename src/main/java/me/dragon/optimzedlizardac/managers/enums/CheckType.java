@@ -8,6 +8,7 @@ public enum CheckType {
     AURA,
     NOFALL,
 
-
+    FLY,
+    JESUS
 
 }

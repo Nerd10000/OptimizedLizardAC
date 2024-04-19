@@ -26,7 +26,7 @@ public class MultiAura implements PacketListener {
                 if (lastTarget != target ){
                     entity++;
                     if (entity > 2){
-                        DataStruc.alert("entity= " + entity , (Player) event.getPlayer(),CheckType.AURA,GradeEnum.B);
+                        DataStruc.alert("entity= " + entity , (Player) event.getPlayer(),CheckType.AURA,GradeEnum.B,5);
                     }
                 }
                 this.lastTarget = target;

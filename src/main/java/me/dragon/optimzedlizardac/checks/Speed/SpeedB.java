@@ -33,19 +33,19 @@ public class SpeedB implements PacketListener {
             deltaX = Math.abs(MovementStruc.x - MovementStruc.lastX);
             deltaZ = Math.abs(MovementStruc.z - MovementStruc.lastZ);
             deltaXZ = Math.hypot(deltaX, deltaZ) * 100;
-            if (deltaXZ > 28. && MovementStruc.y == MovementStruc.lastY) {
+            if (deltaXZ > 28.1 && MovementStruc.y == MovementStruc.lastY) {
                 int level = SpeedA.getPotionLevel(player, PotionEffectType.SPEED);
                 deltaXZ -= 6 * level;
 
-            } else if (deltaXZ > 28. && player.getVelocity().getY() > 0 && player.getFallDistance() == 0) {
-                deltaXZ /= 10.301* player.getVelocity().getY();
-            } else if (deltaXZ > 28. && player.getFallDistance() > 0.0) {
-                deltaXZ -= 14.502*player.getFallDistance();
+            } else if (deltaXZ > 28.1 && player.getVelocity().getY() > 0 && player.getFallDistance() == 0) {
+                deltaXZ /= 24.301* player.getVelocity().getY();
+            } else if (deltaXZ > 28.1 && player.getFallDistance() > 0.0) {
+                deltaXZ -= 29.502*player.getFallDistance();
             }
 
-            if (deltaXZ > 28. && !player.isFlying()) {
+            if (deltaXZ > 28.1 && !player.isFlying()) {
                 //buffer++;
-                DataStruc.alert("&7(*Experimental)&8 deltaXZ= " + deltaXZ + "buffer= " + buffer, player, CheckType.SPEED, GradeEnum.B);
+                DataStruc.alert("&7(*Experimental)&8 deltaXZ= " + deltaXZ + "buffer= " + buffer, player, CheckType.SPEED, GradeEnum.B,5);
                 if (buffer >= 2) {
 
                 }

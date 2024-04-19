@@ -1,19 +1,31 @@
 package me.dragon.optimzedlizardac.managers;
 
+import net.kyori.adventure.chat.ChatType;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
+
+import java.util.stream.Stream;
 
 public class MovementStruc  implements Listener {
 
-    public static double x, y, z,lastX,lastY,lastZ;
+    public static double x, y, z,lastX,lastY,lastZ,yaw,pitch,lastYaw,lastPitch,predictedY;
     //public static Location from, to;
     public static Player player;
+    public  static  Location From,To;
 
+    public  static  long lastYtaken,lastOnGround;
     public static int airTicks, groundTicks, lastGorundTicks, lastAirTicks;
 
+
+    public static  boolean isFalling;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
@@ -21,22 +33,44 @@ public class MovementStruc  implements Listener {
         y = e.getTo().getY();
         z = e.getTo().getZ();
         player = e.getPlayer();
-      lastX  = e.getFrom().getX();
-      lastY = e.getFrom().getY();
-      lastZ = e.getFrom().getZ();
+        yaw = e.getTo().getYaw();
+        pitch = e.getTo().getPitch();
+        From = e.getFrom();
+        To = e.getTo();
+
+        lastYaw = e.getFrom().getYaw();
+        lastPitch = e.getFrom().getPitch();
+        lastX  = e.getFrom().getX();
+        lastY = e.getFrom().getY();
+        lastZ = e.getFrom().getZ();
+
+
 
         if (player.isOnGround()) {
             groundTicks++;
             airTicks = 0;
         } else {
             airTicks++;
-            groundTicks = 0;
+            if (lastGorundTicks > 0) { // check if player was on ground in the last tick
+                lastGorundTicks = 0;
+                lastAirTicks = 0;
+            }
         }
 
+        if (player.getFallDistance() > 0.0f) {
+            isFalling = true;
+        } else {
+            isFalling = false;
+        }
 
         lastAirTicks = airTicks;
         lastGorundTicks = groundTicks;
-
     }
+    @EventHandler
+    public  void onVelocityHandle(PlayerVelocityEvent e){
+        Vector velocity = e.getVelocity();
+    }
+
+
 
 }

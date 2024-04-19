@@ -52,7 +52,7 @@ public class SpeedA implements Listener {
                 buffer++;
                 if (buffer > 5) {
                     // Log violation
-                    DataStruc.alert("distance= " + distance, event.getPlayer(), CheckType.SPEED, GradeEnum.A);
+                    DataStruc.alert("distance= " + distance, event.getPlayer(), CheckType.SPEED, GradeEnum.A,5);
                 }
             } else {
                 // Reset buffer if conditions are not met

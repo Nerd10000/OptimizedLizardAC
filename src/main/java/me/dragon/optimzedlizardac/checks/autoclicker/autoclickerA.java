@@ -18,7 +18,7 @@ public class autoclickerA implements PacketListener {
             cps++;
 
             if (cps > MAX_CPS){
-                DataStruc.alert("cps= " + cps, (Player) event.getPlayer(), CheckType.AUTOCLICKER, GradeEnum.A);
+                DataStruc.alert("cps= " + cps, (Player) event.getPlayer(), CheckType.AUTOCLICKER, GradeEnum.A,10);
                 event.setCancelled(true);
             }
 

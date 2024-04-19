@@ -14,6 +14,7 @@ import java.util.List;
 public class autoclickerB implements PacketListener {
     private List<Long> samples = new ArrayList<>(3);
     private long clickTime,lastClickTime;
+    private float buffer;
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
 
@@ -33,8 +34,15 @@ public class autoclickerB implements PacketListener {
             if (samples.size() != 3){
                 samples.add(delay);
             }
-            if (getDuplicates() > 2){
-                DataStruc.alert("duplicates= " +  getDuplicates(), (Player) event.getPlayer(), CheckType.AUTOCLICKER, GradeEnum.B);
+            if (getDuplicates() > 1 && delay < 20){
+                buffer++;
+                if (buffer > 3){
+                    DataStruc.alert("duplicates= " +  getDuplicates(), (Player) event.getPlayer(), CheckType.AUTOCLICKER, GradeEnum.B,3);
+                    buffer-= 0.75;
+                }
+                buffer-= 0.25;
+
+
             }
             //Get the last 'clickTime'
             this.lastClickTime = clickTime;
