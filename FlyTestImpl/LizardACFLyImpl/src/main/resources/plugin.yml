@@ -1,0 +1,4 @@
+name: LizardACFLyImpl
+version: '${version}'
+main: me.dragon.lizardacflyimpl.LizardACFLyImpl
+api-version: '1.20'
