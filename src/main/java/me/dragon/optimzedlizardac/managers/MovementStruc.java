@@ -9,26 +9,23 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
-import org.bukkit.util.BoundingBox;
-import org.bukkit.util.Vector;
 
-import java.util.stream.Stream;
+public  class MovementStruc  implements Listener {
 
-public class MovementStruc  implements Listener {
-
-    public static double x, y, z,lastX,lastY,lastZ,yaw,pitch,lastYaw,lastPitch,predictedY;
+    public static double x, y, z, lastX, lastY, lastZ, yaw, pitch, lastYaw, lastPitch, predictedY;
     //public static Location from, to;
     public static Player player;
-    public  static  Location From,To;
+    public static Location From, To;
 
-    public  static  long lastVelocityTaken;
+    public static long lastVelocityTaken;
     public static int airTicks, groundTicks, lastGorundTicks, lastAirTicks;
 
-
-    public static  boolean isFalling,isBlocking,isSprinting;
+    public static boolean isFalling, isBlocking, isSprinting;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
+
+
         x = e.getTo().getX();
         y = e.getTo().getY();
         z = e.getTo().getZ();
@@ -40,32 +37,19 @@ public class MovementStruc  implements Listener {
 
         lastYaw = e.getFrom().getYaw();
         lastPitch = e.getFrom().getPitch();
-        lastX  = e.getFrom().getX();
+        lastX = e.getFrom().getX();
         lastY = e.getFrom().getY();
         lastZ = e.getFrom().getZ();
 
 
-
-        if (player.isOnGround()) {
-            groundTicks++;
-            airTicks = 0;
-        } else {
-            airTicks++;
-            if (lastGorundTicks > 0) { // check if player was on ground in the last tick
-                lastGorundTicks = 0;
-                lastAirTicks = 0;
-            }
-        }
-
-        if (player.isSprinting()){
+        if (player.isSprinting()) {
             isSprinting = true;
         } else {
             isSprinting = false;
         }
-        if (player.isBlocking()){
+        if (player.isBlocking()) {
             isBlocking = true;
-        }
-        else {
+        } else {
             isBlocking = false;
         }
 
@@ -74,19 +58,20 @@ public class MovementStruc  implements Listener {
         } else {
             isFalling = false;
         }
-
-        lastAirTicks = airTicks;
-        lastGorundTicks = groundTicks;
     }
-    @EventHandler
-    public  void onVelocityHandle(PlayerVelocityEvent e){
 
-        if (!e.getVelocity().isZero()){
+
+    @EventHandler
+    public void onVelocityHandle(PlayerVelocityEvent e) {
+
+        if (!e.getVelocity().isZero()) {
             lastVelocityTaken = System.currentTimeMillis();
         }
 
 
     }
+
+
 
 
 

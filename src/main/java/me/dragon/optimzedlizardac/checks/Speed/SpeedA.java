@@ -34,6 +34,8 @@ public class SpeedA implements Listener {
         Vector currentVelocity = user.getPlayer().getVelocity();
         final double knockbackThreshold = 1.0;
 
+        Player player = event.getPlayer();
+
         // Check if pastVelocity is not null before using it
         if (pastVelocity != null) {
             final double velocityChange = currentVelocity.distance(pastVelocity);
@@ -50,7 +52,7 @@ public class SpeedA implements Listener {
             if (distance > 0.423 && !user.getPlayer().isFlying() && user.getPlayer().getFallDistance() == 0.0 && user.getPlayer().getVehicle() == null && !isJumpingOnIce(user)) {
                 // Increment buffer and check for violations
                 buffer++;
-                if (buffer > 5) {
+                if (buffer > 5 && !player.isFlying() && !player.isGliding() ) {
                     // Log violation
                     DataStruc.alert("distance= " + distance, event.getPlayer(), CheckType.SPEED, GradeEnum.A,5);
                 }

@@ -4,40 +4,35 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
+
 import me.dragon.optimzedlizardac.managers.DataStruc;
-import me.dragon.optimzedlizardac.managers.MovementStruc;
 import me.dragon.optimzedlizardac.managers.enums.CheckType;
 import me.dragon.optimzedlizardac.managers.enums.GradeEnum;
 import org.bukkit.entity.Player;
 
+import javax.xml.crypto.Data;
+
 public class FlyD implements PacketListener {
-
     private  double buffer;
-
-    private  boolean clientGround  = true,posGround = true;
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-
         if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION){
 
-            boolean posGround = MovementStruc.y % 0.015625 == 0;
+
             WrapperPlayClientPlayerPosition wrapper = new WrapperPlayClientPlayerPosition(event);
 
-            boolean clientGround = wrapper.isOnGround();
+            boolean client = wrapper.isOnGround(),server = wrapper.getPosition().y % 0.015625 < 0.0001; //The result will be 0.015625 if it is correct;
+
+            //ServerUtils serverUtils = new ServerUtils();ChatManager chat = new ChatManager();
 
             Player player = (Player) event.getPlayer();
-            if (clientGround != posGround ){
+            if (client != server ){
+                DataStruc.alert("clientGround=" + client + " | serverGround= "+ server,player, CheckType.FLY, GradeEnum.D,2);
 
-                //Tried to spoof ground
-                buffer++;
-
-                if (buffer > 5){
-                    DataStruc.alert("Tried to SproofGround (Nofall) client=" + clientGround + " posGround/server= "+ posGround, player,
-                            CheckType.FLY, GradeEnum.D,3);
-                }
             }
 
-            buffer-= 0.76;
+
+           //chat.onSendDebug("airTicks= " + TickManager.airTicks);
         }
     }
 }

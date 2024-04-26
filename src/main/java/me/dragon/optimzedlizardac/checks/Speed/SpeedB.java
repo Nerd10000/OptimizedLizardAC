@@ -38,7 +38,7 @@ public class SpeedB implements PacketListener {
                 deltaXZ -= 6 * level;
 
             } else if (deltaXZ > 28.1 && player.getVelocity().getY() > 0 && player.getFallDistance() == 0) {
-                deltaXZ /= 24.301* player.getVelocity().getY();
+                deltaXZ /= 40.301* player.getVelocity().getY();
             } else if (deltaXZ > 28.1 && player.getFallDistance() > 0.0) {
                 deltaXZ -= 29.502*player.getFallDistance();
             }

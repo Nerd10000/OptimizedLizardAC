@@ -3,40 +3,37 @@ package me.dragon.optimzedlizardac.checks.Fly;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+
 import me.dragon.optimzedlizardac.managers.DataStruc;
-import me.dragon.optimzedlizardac.managers.MovementStruc;
 import me.dragon.optimzedlizardac.managers.enums.CheckType;
 import me.dragon.optimzedlizardac.managers.enums.GradeEnum;
-import me.dragon.optimzedlizardac.managers.enums.lastPacket;
-import org.bukkit.Location;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import javax.xml.crypto.Data;
 
 public class FlyA implements PacketListener {
 
-    private float buffer;
+    private double buffer;
 
-    private lastPacket lastSent;
-    private  double lastDeltaY;
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION){
+        if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION){
+
 
             Player player = (Player) event.getPlayer();
-            double deltaY = MovementStruc.y - MovementStruc.lastY;
-            //player.sendMessage("airTicks= " + MovementStruc.airTicks);
-
-            if(MovementStruc.airTicks > 11 && (deltaY - lastDeltaY) > 0.01 && player.getFallDistance() == 0.0f && !player.isFlying() && lastSent != lastPacket.BLOCK_PLACE && !player.isSwimming()){
-                DataStruc.alert("airTicks= "+ MovementStruc.airTicks+ "delta diff= "+ (deltaY - lastDeltaY), (Player) event.getPlayer(),CheckType.FLY,GradeEnum.A,5);
+            //player.sendMessage("AirTicks= " + FlyTickManager.airTicks);
+            if (FlyTickManager.airTicks > 12 &&player.getFallDistance() == 0.0f &&
+                    !player.isInWater() && !player.isFlying() &&player.getGameMode() == GameMode.SURVIVAL &&
+            !FlyTickManager.isUsingElytra) {
+               buffer++;
+                if (buffer > 3){
+                    DataStruc.alert("airTicks= "+ FlyTickManager.airTicks,player, CheckType.FLY, GradeEnum.A,10);
+                    buffer -= 0.20;
+                }
+                buffer -= 0.97;
             }
-            lastDeltaY = deltaY;
-    }else if ( event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT){
-            lastSent = lastPacket.BLOCK_PLACE;
-
+            //player.sendMessage("airTicks= "+ TickManager.airTicks.getOrDefault(player.getUniqueId(),0) + "groundTicks= "+ TickManager.groundTicks.getOrDefault(player.getUniqueId(),0));
         }
     }
-
-
-
 }

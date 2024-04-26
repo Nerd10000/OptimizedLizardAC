@@ -3,35 +3,40 @@ package me.dragon.optimzedlizardac.checks.Fly;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+
 import me.dragon.optimzedlizardac.managers.DataStruc;
 import me.dragon.optimzedlizardac.managers.enums.CheckType;
 import me.dragon.optimzedlizardac.managers.enums.GradeEnum;
-import org.bukkit.entity.Flying;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import javax.xml.crypto.Data;
 
 public class FlyB implements PacketListener {
 
-    private  double buffer;
-    /*
-    FlyB Checks for Y different.
-     */
+    private  double lastDeltaY,lastAccel;
+
+
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION){
-            int currentTick = FlyTickManager.getCurrentTick();
+        if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION){
 
-            double getYOnTick = FlyTickManager.getCurrentY();
-
-
+            double deltaY = FlyTickManager.deltaY;
             Player player = (Player) event.getPlayer();
-            if (FlyTickManager.getDiffY() > 0.42f && !player.isFlying()){
-                DataStruc.alert("diff = "+ FlyTickManager.getDiffY() + "currentTIck = " + FlyTickManager.getCurrentTick(), (Player) event.getPlayer(),CheckType.FLY,GradeEnum.B,10);
+
+            double accel = FlyTickManager.deltaY - lastDeltaY;
+
+            //player.sendMessage("accel" + accel + "airTicks= "+ TickManager.airTicks);
+            boolean invalid = lastAccel <= 0 && accel > 0 && deltaY > 0 && !player.isInWater() &&
+                    !player.isFlying() && player.getGameMode() == GameMode.SURVIVAL && !FlyTickManager.isUsingElytra && player.getFallDistance() == 0.0f;
+            if (FlyTickManager.airTicks > 11 ){
+                if (invalid){
+                    DataStruc.alert("lastAccel =" +lastAccel + " | accel=" + accel + " | airTicks= "+ FlyTickManager.airTicks,
+                            player, CheckType.FLY,GradeEnum.B,5);
+                }
             }
-            //player.sendMessage("currentTick = "+ currentTick + " currentY = " + getYOnTick + " diffY = " + FlyTickManager.getDiffY());
-
-
+            lastDeltaY = deltaY;
+            lastAccel = accel;
         }
     }
 }

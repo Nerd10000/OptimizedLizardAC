@@ -20,7 +20,7 @@ public class SpeedC implements PacketListener {
 
             double dinstance = Math.hypot(velocityXZ,velocityY) * 0.20f;
 
-            player.sendMessage("distance= " + dinstance);
+            //player.sendMessage("distance= " + dinstance);
         }
     }
 }
