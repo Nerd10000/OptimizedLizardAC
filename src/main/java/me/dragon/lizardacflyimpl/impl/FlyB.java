@@ -23,8 +23,9 @@ public class FlyB implements PacketListener {
             double accel = MovementManager.deltaY - lastDeltaY;
 
             //player.sendMessage("accel" + accel + "airTicks= "+ TickManager.airTicks);
-            boolean invalid = lastAccel <= 0 && accel > 0 && deltaY > 0 && !player.isInWater() && !player.isFlying() && player.getGameMode() == GameMode.SURVIVAL;
-            if (TickManager.airTicks  > 11){
+            boolean invalid = lastAccel <= 0 && accel > 0 && deltaY > 0 && !player.isInWater() &&
+                    !player.isFlying() && player.getGameMode() == GameMode.SURVIVAL && !MovementManager.isUsingElytra;
+            if (TickManager.airTicks  > 11 ){
                 if (invalid){
                     LizardACFLyImpl.flagEvent(player,'B',"accel= "+ accel + "lastAccel= "+ lastAccel + "deltaY= "+ deltaY);
                 }

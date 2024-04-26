@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class MovementManager implements Listener {
 
     public  static  double y,lastY,deltaY;
+    public static  boolean isUsingElytra;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e){
@@ -17,6 +18,7 @@ public class MovementManager implements Listener {
 
         deltaY = Math.abs(y - lastY);
 
+        isUsingElytra = e.getPlayer().isGliding();
 
     }
 }

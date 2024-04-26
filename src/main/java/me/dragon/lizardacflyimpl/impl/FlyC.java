@@ -20,7 +20,7 @@ public class FlyC implements PacketListener {
             final double difference = Math.abs(deltaY - prediction);
             Player player = (Player) event.getPlayer();
 
-            boolean isInvalid = difference > 0.00001D && TickManager.airTicks >= 11;
+            boolean isInvalid = difference > 0.00001D && TickManager.airTicks >= 11 && !(MovementManager.y % 0.5 == 0 && player.isOnGround() && lastDeltaY < 0);
            // player.sendMessage("prediction= "+ prediction + "diff= "+ difference);
             if (isInvalid){
                buffer++;
