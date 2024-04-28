@@ -25,7 +25,7 @@ public class FlyA implements PacketListener {
             //player.sendMessage("AirTicks= " + FlyTickManager.airTicks);
             if (FlyTickManager.airTicks > 12 &&player.getFallDistance() == 0.0f &&
                     !player.isInWater() && !player.isFlying() &&player.getGameMode() == GameMode.SURVIVAL &&
-            !FlyTickManager.isUsingElytra) {
+            !FlyTickManager.isUsingElytra && player.isClimbing()) {
                buffer++;
                 if (buffer > 3){
                     DataStruc.alert("airTicks= "+ FlyTickManager.airTicks,player, CheckType.FLY, GradeEnum.A,10);
