@@ -15,17 +15,20 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class FlyE implements PacketListener {
-    private List<Material> blocks = new ArrayList<>();
+    private boolean Found;
+    private  double warning;
+    private List<Boolean> FoundL = new ArrayList<>(9);
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION){
             Player player = (Player) event.getPlayer();
-            double radius = 1.2;
+            double radius = 1;
             Bukkit.getScheduler().runTask(LizardAC.getPlugin(),() -> {
                 for (double x = -radius; x <= radius; x++){
                     for (double y = -radius; y <= radius; y++){
@@ -40,9 +43,32 @@ public class FlyE implements PacketListener {
 
                             Block block = loc.getBlock();
                             if (playerBox.overlaps(blockBox) && !block.getType().isAir()){
-                                player.sendMessage("Overlaps= " + playerBox.overlaps(blockBox));
+                                Found = true;
                             }else{
-                                player.sendMessage("Overlaps= " + playerBox.overlaps(blockBox));
+                               Found = false;
+                            }
+                            FoundL.add(Found);
+                            boolean FoundTrue = false;
+                            for (boolean bool : FoundL){
+                                if (bool){
+                                    FoundTrue = true;
+                                }
+                            }
+                            if (!FoundTrue){
+
+                                warning++;
+                                if (warning > 3){
+                                    warning -= 0.2;
+                                    DataStruc.alert("No nearby block found! Buffer=" + warning,player,CheckType.FLY,GradeEnum.E,10);
+                                }
+
+                            }
+                            warning -= 0.98;
+                            player.sendMessage("FoundList = " + FoundL + " | IsContainTrue= " + FoundTrue);
+
+                            if (FoundL.size() == 9 || FoundL.size() > 9){
+                                FoundL.clear();
+
                             }
 
 
