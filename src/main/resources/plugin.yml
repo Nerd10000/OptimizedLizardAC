@@ -1,0 +1,5 @@
+name: Optimzed-LizardAC
+version: '${version}'
+main: me.dragon.optimzedlizardac.LizardAC
+api-version: '1.20'
+prefix: "LizardAC"
