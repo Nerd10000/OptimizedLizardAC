@@ -28,7 +28,7 @@ public class FlyE implements PacketListener {
 
 
         Player player = (Player) event.getPlayer();
-        if (event.getPacketType() == PacketType.Play.Client.PLAYER_FLYING && WrapperPlayClientPlayerFlying.isFlying(event.getPacketType()) && !player.isFlying()){
+        if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType()) && !player.isFlying()){
 
             double radius = 1;
             Bukkit.getScheduler().runTask(LizardAC.getPlugin(),() -> {
