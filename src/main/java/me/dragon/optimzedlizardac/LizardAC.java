@@ -12,6 +12,7 @@ import me.dragon.optimzedlizardac.checks.Aura.MultiAura;
 import me.dragon.optimzedlizardac.checks.Fly.*;
 
 import me.dragon.optimzedlizardac.checks.Jesus.JesusA;
+import me.dragon.optimzedlizardac.checks.Motion.MotionA;
 import me.dragon.optimzedlizardac.checks.NoSlow.NoSlowA;
 import me.dragon.optimzedlizardac.checks.NoSlow.NoSlowB;
 import me.dragon.optimzedlizardac.checks.Nofall.NoFallA;
@@ -119,6 +120,8 @@ public final class LizardAC extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage( "[LizardAC]" + ChatColor.GREEN + "Successfully enabled StrafeA");
         PacketEvents.getAPI().getEventManager().registerListener(new StrafeA(), PacketListenerPriority.NORMAL);
+        Bukkit.getConsoleSender().sendMessage( "[LizardAC]" + ChatColor.GREEN + "Successfully enabled MotionA");
+        PacketEvents.getAPI().getEventManager().registerListener(new MotionA(),PacketListenerPriority.NORMAL);
 
         //PacketEvents.getAPI().getEventManager().registerListener(new JesusA(),PacketListenerPriority.NORMAL);
 

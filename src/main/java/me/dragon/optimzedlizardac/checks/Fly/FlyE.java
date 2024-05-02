@@ -13,78 +13,49 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
-import java.util.ArrayList;
-import java.util.List;
-
-
-
 
 public class FlyE implements PacketListener {
-    private boolean Found;
-    private  double warning;
-    private List<Boolean> FoundL = new ArrayList<>(9);
+    double buffer;
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-
-
         Player player = (Player) event.getPlayer();
-        if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType()) && !player.isFlying()){
 
+        if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType()) && !player.isFlying()) {
+            boolean invalid = true;
             double radius = 1;
-            Bukkit.getScheduler().runTask(LizardAC.getPlugin(),() -> {
-                for (double x = -radius; x <= radius; x++){
-                    for (double y = -radius; y <= radius; y++){
-                        for (double z = -radius; z <= radius;z++){
-                            Location loc = player.getLocation().clone().add(x,y,z);
-                            BoundingBox blockBox = player.getWorld().getBlockAt(loc).getBoundingBox();
 
-                            BoundingBox playerBox = player.getBoundingBox().expand(1e-7,1e-7,1e-7);
+            for (double x = -1; x <= 0 && invalid; x++) {
+                for (double y = -1; y <= 0 && invalid; y++) {
+                    for (double z = -1; z <= 0 && invalid; z++) {
+                        Location loc = player.getLocation().clone().add(x, y, z);
+                        Block block = loc.getBlock();
 
+                        if (block.getType().isAir()) {
+                            continue;
+                        }
 
-                            //boolean exempt = player.getFallDistance() > 0.1f; //I will need this for the check!
-
-                            Block block = loc.getBlock();
-                            if (playerBox.overlaps(blockBox) && !block.getType().isAir()){
-                                Found = true;
-                            }else{
-                                Found = false;
-                            }
-                            FoundL.add(Found);
-                            boolean FoundTrue = false;
-                            for (boolean bool : FoundL){
-                                if (bool){
-                                    FoundTrue = true;
-                                }else {
-                                    bool = false;
-                                }
-                            }
-                            if (!FoundTrue){
-
-                                warning++;
-                                if (warning > 3){
-                                    warning -= 0.2;
-                                    DataStruc.alert("No nearby block found! Buffer=" + warning,player,CheckType.FLY,GradeEnum.E,10);
-                                }
-                            }
-                            warning -= 0.98;
-                            if (FoundL.size() == 9 || FoundL.size() > 9){
-                                FoundL.clear();
-
-                            }
+                        BoundingBox blockBox = player.getWorld().getBlockAt(loc).getBoundingBox();
+                        BoundingBox playerBox = player.getBoundingBox();
 
 
-
+                        // If the player's expanded hitbox overlaps with a non-air block, set invalid to false
+                        if (playerBox.expand(1e-9).overlaps(blockBox)) {
+                            invalid = false;
+                            break; // No need to continue the loop if invalid is false
                         }
                     }
                 }
-            });
+            }
 
-
-
-
+            if (invalid && !player.isGliding() && player.getFallDistance() == 0.0f) {
+                // Notify the player about the suspected fly cheatű
+                buffer++;
+                if (buffer > 3){
+                    DataStruc.alert("Block is not found..", player, CheckType.FLY, GradeEnum.E, 10);
+                    buffer -= 0.20;
+                }
+                buffer -= 0.86;
+            }
         }
     }
-
-
 }
-

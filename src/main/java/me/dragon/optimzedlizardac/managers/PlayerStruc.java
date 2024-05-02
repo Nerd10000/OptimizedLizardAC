@@ -14,4 +14,10 @@ public class PlayerStruc {
     public PlayerStruc(DataStruc playerData) {
         this.playerData = playerData;
     }
+
+    public void DebugToConsole(String value){
+
+
+
+    }
 }

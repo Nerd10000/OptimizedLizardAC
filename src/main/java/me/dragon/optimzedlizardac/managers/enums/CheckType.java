@@ -12,6 +12,7 @@ public enum CheckType {
     JESUS,
 
     NOSLOW,
-    STRAFE
+    STRAFE,
+    MOTION
 
 }
